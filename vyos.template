@@ -2,14 +2,14 @@ configure
 
 set service ssh port 22
 
-set interfaces ethernet eth0 address '192.168.68.60/24'
+set interfaces ethernet eth0 address '[MANAGEMENT_ADDRESS]'
 set interfaces ethernet eth0 description 'Outside'
-set interfaces ethernet eth1 address '192.168.0.1/24'
+set interfaces ethernet eth1 address '192.168.68.1/24'
 set interfaces ethernet eth1 description 'Inside'
-set nat source rule 100 outbound-interface name 'eth0'    ****************************
-set nat source rule 100 translation address '192.168.68.60'
+set nat source rule 100 outbound-interface name 'eth0'
+set nat source rule 100 translation address '[MANAGEMENT_IP]'
 set nat source rule 100 translation address 'masquerade'
-set protocols static route 0.0.0.0/0 next-hop 192.168.68.1
+set protocols static route 0.0.0.0/0 next-hop [MANAGEMENT_GATEWAY]
 
 set interfaces ethernet eth1 mtu '1700'
 set interfaces ethernet eth1 vif 10 address '172.30.10.1/24'
@@ -24,18 +24,18 @@ set interfaces ethernet eth1 vif 40 address '172.30.40.1/24'
 set interfaces ethernet eth1 vif 40 description 'VLAN 40 for EDGE UPLINK'
 set interfaces ethernet eth1 vif 40 mtu '1700'
 
-set nat destination rule 100 description 'RDP to 192.168.68.125:3389'
+set nat destination rule 100 description 'RDP to [JUMPHOST_VM_IP]:3389'
 set nat destination rule 100 destination port '3389'
 set nat destination rule 100 inbound-interface name 'eth0'
 set nat destination rule 100 protocol 'tcp'
 set nat destination rule 100 translation address '192.168.0.10'
 set nat destination rule 100 translation port '3389'
 
-set service dns forwarding domain vmbeer.local name-server 192.168.68.145 **************************
-set service dns forwarding domain 10.30.172.in-addr.arpa. name-server 192.168.68.145
-set service dns forwarding domain 20.30.172.in-addr.arpa. name-server 192.168.68.145
-set service dns forwarding domain 30.30.172.in-addr.arpa. name-server 192.168.68.145
-set service dns forwarding domain 40.30.172.in-addr.arpa. name-server 192.168.68.145
+set service dns forwarding domain [MANAGEMENT_DNS_DOMAIN] name-server [MANAGEMENT_DNS_SERVER]
+set service dns forwarding domain 10.30.172.in-addr.arpa. name-server [MANAGEMENT_DNS_SERVER]
+set service dns forwarding domain 20.30.172.in-addr.arpa. name-server [MANAGEMENT_DNS_SERVER]
+set service dns forwarding domain 30.30.172.in-addr.arpa. name-server [MANAGEMENT_DNS_SERVER]
+set service dns forwarding domain 40.30.172.in-addr.arpa. name-server [MANAGEMENT_DNS_SERVER]
 set service dns forwarding allow-from 0.0.0.0/0
 set service dns forwarding listen-address 192.168.0.1
 set service dns forwarding listen-address 172.30.10.1
