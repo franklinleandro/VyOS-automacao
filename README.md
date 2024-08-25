@@ -1,5 +1,15 @@
 # Implantação Automatizada do VMware Cloud Foundation em Home Lab
 
+Import-Module ./VyOS.psm1
+
+New-VyOSInstallation -VMName VyOS -ManagementPassword VMware1!
+
+
+
+New-VyOSConfiguration -VMName VyOS -ConfigFile vyos.template -ManagementAddress 192.168.68.160/24 -ManagementGateway 192.168.68.1 -ManagementDNSDomain vmbeer.local -ManagementDNSServer 192.168.68.145 -ManagementJumpHostIP 192.168.68.127 -ManagementPassword VMware1!
+
+
+
 
 ## Observação
 
