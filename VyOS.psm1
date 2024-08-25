@@ -161,30 +161,31 @@ Function New-VyOSInstallation {
 
     # Login to console and install VyOS before starting configuration
     Set-VMKeystrokes -VMName $VMName -StringInput "vyos" -ReturnCarriage $true
+    Start-Sleep -Seconds 3
     Set-VMKeystrokes -VMName $VMName -StringInput "vyos" -ReturnCarriage $true
+    Start-Sleep -Seconds 3
     Set-VMKeystrokes -VMName $VMName -StringInput "install image" -ReturnCarriage $true
+    Start-Sleep -Seconds 3
     Set-VMKeystrokes -VMName $VMName -StringInput "yes" -ReturnCarriage $true
-    Start-Sleep -Seconds 5
-    Set-VMKeystrokes -VMName $VMName -StringInput "Auto" -ReturnCarriage $true
-    Start-Sleep -Seconds 1
-    Set-VMKeystrokes -VMName $VMName -StringInput "sda" -ReturnCarriage $true
-    Start-Sleep -Seconds 5
+    Start-Sleep -Seconds 3
+    Set-VMKeystrokes -VMName $VMName -StringInput "VyOS" -ReturnCarriage $true
+    Start-Sleep -Seconds 2
+	Set-VMKeystrokes -VMName $VMName -StringInput "$ManagementPassword" -ReturnCarriage $true
+	Start-Sleep -Seconds 2
+	Set-VMKeystrokes -VMName $VMName -StringInput "$ManagementPassword" -ReturnCarriage $true
+	Start-Sleep -Seconds 2
+	Set-VMKeystrokes -VMName $VMName -StringInput "K" -ReturnCarriage $true
+	Start-Sleep -Seconds 3
+    Set-VMKeystrokes -VMName $VMName -StringInput "/dev/sda" -ReturnCarriage $true
+    Start-Sleep -Seconds 3
     Set-VMKeystrokes -VMName $VMName -StringInput "yes" -ReturnCarriage $true
-    Start-Sleep -Seconds 5
-    Set-VMKeystrokes -VMName $VMName -StringInput " " -ReturnCarriage $true
-    Start-Sleep -Seconds 10
-    Set-VMKeystrokes -VMName $VMName -StringInput "vyos-router" -ReturnCarriage $true
-    Start-Sleep -Seconds 5
-    Set-VMKeystrokes -VMName $VMName -StringInput " " -ReturnCarriage $true
-    Start-Sleep -Seconds 10
-    Set-VMKeystrokes -VMName $VMName -StringInput "$ManagementPassword" -ReturnCarriage $true
-    Start-Sleep -Seconds 5
-    Set-VMKeystrokes -VMName $VMName -StringInput "$ManagementPassword" -ReturnCarriage $true
-    Start-Sleep -Seconds 5
-    Set-VMKeystrokes -VMName $VMName -StringInput "sda" -ReturnCarriage $true
-    Start-Sleep -Seconds 5
+    Start-Sleep -Seconds 3
+    Set-VMKeystrokes -VMName $VMName -StringInput "yes" -ReturnCarriage $true
+    Start-Sleep -Seconds 3
+    Set-VMKeystrokes -VMName $VMName -StringInput "1" -ReturnCarriage $true
+    Start-Sleep -Seconds 25
     Set-VMKeystrokes -VMName $VMName -StringInput "reboot" -ReturnCarriage $true
-    Start-Sleep -Seconds 5
+    Start-Sleep -Seconds 3
     Set-VMKeystrokes -VMName $VMName -StringInput "y" -ReturnCarriage $true
     Start-Sleep -Seconds 5
     Get-VM $VMName | Get-CDDrive | Set-CDDrive -Connected $false -Confirm:$false -ErrorAction Ignore -WarningAction Ignore | Out-Null
