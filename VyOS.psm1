@@ -183,7 +183,7 @@ Function New-VyOSInstallation {
     Set-VMKeystrokes -VMName $VMName -StringInput "yes" -ReturnCarriage $true
     Start-Sleep -Seconds 3
     Set-VMKeystrokes -VMName $VMName -StringInput "1" -ReturnCarriage $true
-    Start-Sleep -Seconds 25
+    Start-Sleep -Seconds 30
     Set-VMKeystrokes -VMName $VMName -StringInput "reboot" -ReturnCarriage $true
     Start-Sleep -Seconds 3
     Set-VMKeystrokes -VMName $VMName -StringInput "y" -ReturnCarriage $true
