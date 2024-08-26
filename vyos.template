@@ -4,7 +4,7 @@ set service ssh port 22
 
 set interfaces ethernet eth0 address '[MANAGEMENT_ADDRESS]'
 set interfaces ethernet eth0 description 'Outside'
-set interfaces ethernet eth1 address '192.168.68.1/24'
+set interfaces ethernet eth1 address '192.168.0.1/24'
 set interfaces ethernet eth1 description 'Inside'
 set nat source rule 100 outbound-interface name 'eth0'
 set nat source rule 100 translation address '[MANAGEMENT_IP]'
