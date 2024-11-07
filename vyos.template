@@ -2,72 +2,90 @@ configure
 
 set service ssh port 22
 
-set system host-name vmb-vyos01.vmbeer.local
-set system name-server 192.168.68.239
+set system host-name vmb-vyos01
+set system name-server '[MANAGEMENT_DNS_SERVER]'
 
 set interfaces ethernet eth0 address '[MANAGEMENT_ADDRESS]'
-set interfaces ethernet eth0 description 'pg-mgmt'
+set interfaces ethernet eth0 description 'portgroup pg-mgmt'
 set interfaces ethernet eth1 address '192.168.0.1/24'
-set interfaces ethernet eth1 description 'pg-vyos'
+set interfaces ethernet eth1 description 'portgroup pg-vyos'
 
-set nat source rule 100 outbound-interface 'eth0'
+set nat source rule 100 outbound-interface name 'eth0'
+set nat source rule 100 translation address '[MANAGEMENT_IP]'
 set nat source rule 100 translation address 'masquerade'
+set protocols static route 0.0.0.0/0 next-hop '[MANAGEMENT_GATEWAY]'
 
-set protocols static route 0.0.0.0/0 next-hop [MANAGEMENT_GATEWAY]
+set interfaces ethernet eth1 mtu '9000'
+set interfaces ethernet eth1 vif 1631 address '172.16.31.1/24'
+set interfaces ethernet eth1 vif 1631 description 'Mgmt-VLAN-1631'
+set interfaces ethernet eth1 vif 1631 mtu '9000'
 
-set interfaces ethernet eth1 mtu '1700'
-set interfaces ethernet eth1 vif 10 address '172.30.10.1/24'
-set interfaces ethernet eth1 vif 10 description 'VLAN 10 for MGMT'
-set interfaces ethernet eth1 vif 20 address '172.30.20.1/24'
-set interfaces ethernet eth1 vif 20 description 'VLAN 20 for HOST VTEP'
-set interfaces ethernet eth1 vif 20 mtu '1700'
-set interfaces ethernet eth1 vif 30 address '172.30.30.1/24'
-set interfaces ethernet eth1 vif 30 description 'VLAN 30 for EDGE VTEP'
-set interfaces ethernet eth1 vif 30 mtu '1700'
-set interfaces ethernet eth1 vif 40 address '172.30.40.1/24'
-set interfaces ethernet eth1 vif 40 description 'VLAN 40 for EDGE UPLINK'
-set interfaces ethernet eth1 vif 40 mtu '1700'
+set interfaces ethernet eth1 vif 1632 address '172.16.32.1/24'
+set interfaces ethernet eth1 vif 1632 description 'vMotion-VLAN-1632'
+set interfaces ethernet eth1 vif 1632 mtu '9000'
 
-set interfaces ethernet eth1 vif 50 address '172.30.50.1/24'
-set interfaces ethernet eth1 vif 50 description 'VLAN 50 for vMotion'
-set interfaces ethernet eth1 vif 60 address '172.30.60.1/24'
-set interfaces ethernet eth1 vif 60 description 'VLAN 60 for vSAN'
+set interfaces ethernet eth1 vif 1633 address '172.16.33.1/24'
+set interfaces ethernet eth1 vif 1633 description 'vSAN-VLAN-1633'
+set interfaces ethernet eth1 vif 1633 mtu '9000'
 
-set nat destination rule 100 description 'RDP to [JUMPHOST_VM_IP]:3389'
-set nat destination rule 100 destination port '3389'
-set nat destination rule 100 inbound-interface 'eth0'
-set nat destination rule 100 protocol 'tcp'
-set nat destination rule 100 translation address '192.168.0.10'
-set nat destination rule 100 translation port '3389'
+set interfaces ethernet eth1 vif 1634 address '172.16.34.1/24'
+set interfaces ethernet eth1 vif 1634 description 'Host-TEP-VLAN-1634'
+set interfaces ethernet eth1 vif 1634 mtu '9000'
 
+set interfaces ethernet eth1 vif 2711 address '172.27.11.1/24'
+set interfaces ethernet eth1 vif 2711 description 'Edge-Uplink01-VLAN-2711'
+set interfaces ethernet eth1 vif 2711 mtu '9000'
 
-set nat source rule 10 outbound-interface eth0
-set nat source rule 10 source address 172.30.10.0/24
-set nat source rule 10 translation address masquerade
+set interfaces ethernet eth1 vif 2712 address '172.27.12.1/24'
+set interfaces ethernet eth1 vif 2712 description 'Edge-Uplink02-VLAN-2712'
+set interfaces ethernet eth1 vif 2712 mtu '9000'
 
-set nat source rule 20 outbound-interface eth0
-set nat source rule 20 source address 172.30.20.0/24
-set nat source rule 20 translation address masquerade
-
-set nat source rule 30 outbound-interface eth0
-set nat source rule 30 source address 172.30.30.0/24
-set nat source rule 30 translation address masquerade
-
-set nat source rule 40 outbound-interface eth0
-set nat source rule 40 source address 172.30.40.0/24
-set nat source rule 40 translation address masquerade
+set interfaces ethernet eth1 vif 2713 address '172.27.13.1/24'
+set interfaces ethernet eth1 vif 2713 description 'Edge-Overlay-VLAN-2713'
+set interfaces ethernet eth1 vif 2713 mtu '9000'
 
 
-set protocols bgp 65001
-set protocols bgp 65001 neighbor 192.168.1.1 remote-as 65002
-set protocols bgp 65001 neighbor 192.168.1.1 description 'NSX Edge Router'
-set protocols bgp 65001 neighbor 192.168.1.1 update-source 'eth1'
+set nat source rule 1631 outbound-interface name eth0
+set nat source rule 1631 source address 172.16.31.0/24
+set nat source rule 1631 translation address masquerade
 
-set protocols bgp 65001 network 172.30.10.0/24
-set protocols bgp 65001 network 172.30.20.0/24
-set protocols bgp 65001 network 172.30.30.0/24
-set protocols bgp 65001 network 172.30.40.0/24
+set nat source rule 1632 outbound-interface name eth0
+set nat source rule 1632 source address 172.16.32.0/24
+set nat source rule 1632 translation address masquerade
 
+set nat source rule 1633 outbound-interface name eth0
+set nat source rule 1633 source address 172.16.33.0/24
+set nat source rule 1633 translation address masquerade
+
+set nat source rule 1634 outbound-interface name eth0
+set nat source rule 1634 source address 172.16.34.0/24
+set nat source rule 1634 translation address masquerade
+
+set nat source rule 2711 outbound-interface name eth0
+set nat source rule 2711 source address 172.27.11.0/24
+set nat source rule 2711 translation address masquerade
+
+set nat source rule 2712 outbound-interface name eth0
+set nat source rule 2712 source address 172.27.12.0/24
+set nat source rule 2712 translation address masquerade
+
+set nat source rule 2713 outbound-interface name eth0
+set nat source rule 2713 source address 172.27.13.0/24
+set nat source rule 2713 translation address masquerade
+
+set protocols bgp system-as 65001
+set protocols bgp neighbor 192.168.1.1 remote-as 65002
+set protocols bgp neighbor 192.168.1.1 description 'NSX Edge Router'
+set protocols bgp neighbor 192.168.1.1 update-source 'eth1'
+set protocols bgp neighbor 192.168.1.1 ebgp-multihop '2'
+
+set protocols bgp address-family ipv4-unicast network 172.16.31.0/24
+set protocols bgp address-family ipv4-unicast network 172.16.32.0/24
+set protocols bgp address-family ipv4-unicast network 172.16.33.0/24
+set protocols bgp address-family ipv4-unicast network 172.16.34.0/24
+set protocols bgp address-family ipv4-unicast network 172.27.11.0/24
+set protocols bgp address-family ipv4-unicast network 172.27.12.0/24
+set protocols bgp address-family ipv4-unicast network 172.27.13.0/24
 
 commit
 save
