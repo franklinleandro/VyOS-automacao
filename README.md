@@ -3,7 +3,9 @@
 Instalação e Configuração do VyOS
 
 Download OVA e fazer o deploy no Cluster de VMware
+
 https://vyos.net/get/nightly-builds/
+
 https://github.com/vyos/vyos-nightly-build/releases/download/1.5-rolling-202411070006/vyos-1.5-rolling-202411070006-generic-amd64.iso
 
 Criar um PG isolado (VSS/VDS) e configurar para passar todas as VLAN nela. Basta colocar a VLAN ID 4095
