@@ -231,13 +231,14 @@ Function New-VyOSConfiguration {
         [Parameter(Mandatory=$true)][String]$ManagementGateway,
         [Parameter(Mandatory=$true)][String]$ManagementDNSDomain,
         [Parameter(Mandatory=$true)][String]$ManagementDNSServer,
-        [Parameter(Mandatory=$true)][String]$ManagementJumpHostIP,
-        [Parameter(Mandatory=$true)][String]$ManagementPassword
+                [Parameter(Mandatory=$true)][String]$ManagementPassword
     )
 
     # Login to console and install VyOS before starting configuration
     Set-VMKeystrokes -VMName $VMName -StringInput "vyos" -ReturnCarriage $true
+	Start-Sleep -Seconds 2
     Set-VMKeystrokes -VMName $VMName -StringInput "$ManagementPassword" -ReturnCarriage $true
+	Start-Sleep -Seconds 2
 
     foreach ($cmd in Get-Content -Path $ConfigFile | Where-Object { $_.Trim() -ne '' }) {
         if($cmd.Contains('[MANAGEMENT_ADDRESS]')) {
@@ -246,7 +247,7 @@ Function New-VyOSConfiguration {
                 $cmd
             } else {
                 Set-VMKeystrokes -VMName $VMName -StringInput $cmd -ReturnCarriage $true
-                Start-Sleep -Seconds 1
+                Start-Sleep -Seconds 2
             }
         } elseif($cmd.Contains('[MANAGEMENT_IP]')) {
             $ManagementAddress = $ManagementAddress.substring(0,$ManagementAddress.IndexOf('/'))
@@ -255,7 +256,7 @@ Function New-VyOSConfiguration {
                 $cmd
             } else {
                 Set-VMKeystrokes -VMName $VMName -StringInput $cmd -ReturnCarriage $true
-                Start-Sleep -Seconds 1
+                Start-Sleep -Seconds 2
             }
         } elseif($cmd.Contains('[MANAGEMENT_GATEWAY]')) {
             $cmd = $cmd.replace('[MANAGEMENT_GATEWAY]',$ManagementGateway)
@@ -263,15 +264,7 @@ Function New-VyOSConfiguration {
                 $cmd
             } else {
                 Set-VMKeystrokes -VMName $VMName -StringInput $cmd -ReturnCarriage $true
-                Start-Sleep -Seconds 1
-            }
-        } elseif($cmd.Contains('[JUMPHOST_VM_IP]')) {
-            $cmd = $cmd.replace('[JUMPHOST_VM_IP]',$ManagementJumpHostIP)
-            if($Troubleshoot) {
-                $cmd
-            } else {
-                Set-VMKeystrokes -VMName $VMName -StringInput $cmd -ReturnCarriage $true
-                Start-Sleep -Seconds 1
+                Start-Sleep -Seconds 2
             }
         } elseif($cmd.Contains('[MANAGEMENT_DNS_DOMAIN]')) {
             $cmd = $cmd.replace('[MANAGEMENT_DNS_DOMAIN]',$ManagementDNSDomain)
@@ -280,7 +273,7 @@ Function New-VyOSConfiguration {
                 $cmd
             } else {
                 Set-VMKeystrokes -VMName $VMName -StringInput $cmd -ReturnCarriage $true
-                Start-Sleep -Seconds 1
+                Start-Sleep -Seconds 2
             }
         } elseif($cmd.Contains('[MANAGEMENT_DNS_SERVER]')) {
             $cmd = $cmd.replace('[MANAGEMENT_DNS_SERVER]',$ManagementDNSServer)
@@ -288,14 +281,14 @@ Function New-VyOSConfiguration {
                 $cmd
             } else {
                 Set-VMKeystrokes -VMName $VMName -StringInput $cmd -ReturnCarriage $true
-                Start-Sleep -Seconds 1
+                Start-Sleep -Seconds 2
             }
         } else {
             if($Troubleshoot) {
                 $cmd
             } else {
                 Set-VMKeystrokes -VMName $VMName -StringInput $cmd -ReturnCarriage $true
-                Start-Sleep -Seconds 1
+                Start-Sleep -Seconds 2
             }
         }
     }
